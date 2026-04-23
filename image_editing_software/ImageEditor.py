@@ -43,7 +43,7 @@ class ImageEditor:
         while (True):
 
             if (image_editor.image is None):                
-                image_name = input("Digite o nome e extensão da imagem (ex: nome_imagem.png) ")
+                image_name = input("Digite o nome e extensão da imagem (ex: nome_imagem.png): ")
                 self.load_image(image_name)
 
             print("\n===== MENU PRINCIPAL =====")
@@ -56,7 +56,7 @@ class ImageEditor:
             op = input("Escolha uma opção: ")
 
             if op == "1":
-                image_name = input("Digite o nome da imagem com a extensão (ex: nara.jpg): ")
+                image_name = input("Digite o nome e extensão da imagem (ex: nome_imagem.png): ")
                 self.load_image(image_name)
 
             elif op == "2":
@@ -75,7 +75,47 @@ class ImageEditor:
                 break
 
     def menu_intensity_transformations(self):
-        pass
+        intensity_transformations = IntensityTransformations.IntensityTransformationsOperations()
+        while True:    
+            print("\n===== Menu Transformações de Intensidade =====")
+            print("1 - Inversa")
+            print("2 - Log")
+            print("3 - Gamma")
+            print("4 - Modulação de Contraste")
+            print("5 - Threshold")
+            print("6 - Mostrar imagem")
+            print("0 - Voltar ao Menu anterior")
+
+            op = input("Escolha: ")
+
+            if op == "1":
+                self.image = intensity_transformations.inverse(self.image)
+                self.save("edited_image_inv.png")
+            elif op == "2":
+                self.image = intensity_transformations.log_transformation(self.image)
+                self.save("edited_image_log.png")
+            elif op == "3":
+                g = float(input("Gamma: "))
+                self.image = intensity_transformations.gamma_transformation(self.image, g)
+            elif op == "4":
+                a = int(input("a: "))
+                b = int(input("b: "))
+                c = int(input("c: "))
+                d = int(input("d: "))
+                self.image = intensity_transformations.mod_transformation(self.image, a, b, c, d)
+                self.save("edited_image_mod.png")
+            elif op == "5":
+                t = int(input("Threshold: "))
+                self.image = intensity_transformations.limiar_transformation(self.image, t)
+                self.save("edited_image_lim.png")
+            elif op == "6":
+                if self.image is not None:
+                    self.show()
+                else:
+                    print("Carregue uma imagem primeiro!")
+            elif op == "0":
+                print("\nVoltando ao menu anterior ...")
+                break
 
     def menu_geometric_transformations(self):
         pass
