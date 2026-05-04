@@ -29,14 +29,18 @@ class ImageEditor:
         plt.axis('off')
         plt.show()
 
+    def save(self, file_name):
+        folder_path = "edited_images"
+        save_path = os.path.join(folder_path, file_name)
 
-    def save(self, filename):
-        if os.path.exists(filename):
+        if os.path.exists(save_path):
             print("Arquivo já existe! - Sobreescrevendo...")
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
 
         if self.image is not None:
-            iio.imwrite(filename, self.image.astype(np.uint8))
-            print(f"Imagem salva como {filename}")
+            iio.imwrite(save_path, self.image.astype(np.uint8))
+            print(f"Imagem salva como {file_name}")
         else:
             print("Nenhuma imagem para salvar!")
 
