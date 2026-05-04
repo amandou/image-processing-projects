@@ -2,12 +2,9 @@ import imageio.v3 as iio
 import matplotlib.pyplot as plt
 import numpy as np
 
-class IntensityTransformations:
+class IntensityTransformationsOperations:
     def inverse(self, z):
       return 255 - z
-    
-    def negative(self, z):
-      return  1-z
     
     def mod_transformation(self, z, a=30, b=200, c=0, d=250):
         z = z.astype(float)
