@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 import sys
-
+import re
 import IntensityTransformations
 import GeometricTransformations
 
@@ -88,6 +88,8 @@ class ImageEditor:
 
     def menu_intensity_transformations(self):
         intensity_transformations = IntensityTransformations.IntensityTransformationsOperations()
+        name = re.search(r"^[^.]*", self.image_name).group()
+
         while True:    
             print("\n===== Menu Transformações de Intensidade =====")
             print("1 - Inversa")
@@ -96,23 +98,23 @@ class ImageEditor:
             print("4 - Modulação de Contraste")
             print("5 - Limiar")
             print("6 - Mostrar imagem")
-            print("0 - Voltar ao Menu anterior")
+            print("0 - Voltar ao menu principal")
             print("9 - Sair de tudo")
 
             op = input("Escolha: ")
-
+            
             if op == "1":
                 self.image = intensity_transformations.inverse(self.image)
-                self.save("edited_image_inv.png")
+                self.save(name+"_edited_inv.png")
                 self.reset_image()
             elif op == "2":
                 self.image = intensity_transformations.log_transformation(self.image)
-                self.save("edited_image_log.png")
+                self.save(name+"_edited_image_log.png")
                 self.reset_image()
             elif op == "3":
                 g = float(input("Gamma: "))
                 self.image = intensity_transformations.gamma_transformation(self.image, g)
-                self.save("edited_image_gamma.png")
+                self.save(name+"_edited_image_gamma.png")
                 self.reset_image()
             elif op == "4":
                 a = int(input("a: "))
@@ -120,12 +122,11 @@ class ImageEditor:
                 c = int(input("c: "))
                 d = int(input("d: "))
                 self.image = intensity_transformations.mod_transformation(self.image, a, b, c, d)
-                self.save("edited_image_mod.png")
+                self.save(name+"_edited_image_mod.png")
                 self.reset_image()
             elif op == "5":
-                t = int(input("Limiar: "))
-                self.image = intensity_transformations.limiar_transformation(self.image, t)
-                self.save("edited_image_lim.png")
+                self.image = intensity_transformations.creativity_transformation(self.image)
+                self.save(name+"_edited_image_lim.png")
                 self.reset_image()
             elif op == "6":
                 if self.image is not None:
