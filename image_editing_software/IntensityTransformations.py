@@ -8,9 +8,10 @@ class IntensityTransformationsOperations:
     
     def mod_transformation(self, z, a=30, b=200, c=0, d=250):
         z = z.astype(float)
-        z = (z-a)*((d-c)/(b-a)) + c
+        z = (z-a)/(b-a)
+        z = z*(d-c)+c
         z = np.clip(z, 0, 255)
-        return z.astype(np.uint8)        
+        return z.astype(np.uint8) 
 
     def log_transformation(self, z):
         z = z.astype(float)
@@ -26,6 +27,5 @@ class IntensityTransformationsOperations:
 
     def limiar_transformation(self, z, L):
         z[z > L] = 255
-        z[z < L] = 0
+        z[z <= L] = 0
         return z
-
