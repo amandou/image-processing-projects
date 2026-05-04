@@ -2,7 +2,7 @@ import imageio.v3 as iio
 import matplotlib.pyplot as plt
 import numpy as np
 
-class GeometricTransformations:
+class GeometricTransformationsOperations:
     def inv_rot_matrix(theta):
         return np.array([
             [np.cos(theta), -np.sin(theta), 0],
