@@ -2,6 +2,7 @@ import imageio.v3 as iio
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import sys
 
 import IntensityTransformations
 import GeometricTransformations
@@ -85,6 +86,7 @@ class ImageEditor:
             print("5 - Threshold")
             print("6 - Mostrar imagem")
             print("0 - Voltar ao Menu anterior")
+            print("9 - Sair de tudo")
 
             op = input("Escolha: ")
 
@@ -116,6 +118,8 @@ class ImageEditor:
             elif op == "0":
                 print("\nVoltando ao menu anterior ...")
                 break
+            elif op == "9":
+                sys.exit()
 
     def menu_geometric_transformations(self):
         pass
