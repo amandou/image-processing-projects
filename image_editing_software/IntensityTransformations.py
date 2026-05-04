@@ -20,8 +20,8 @@ class IntensityTransformationsOperations:
 
     def gamma_transformation(self, z, gamma=2.2):
         z = z.astype(float)
-        z = z ** gamma
-        z = z * 255/(255**gamma)
+        z = z ** (1/gamma)
+        z = z * 255/(255**(1/gamma))
         return z.astype(np.uint8)
 
     def limiar_transformation(self, z, L):
