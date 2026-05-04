@@ -16,6 +16,14 @@ class ImageEditor:
             self.load_image(image_name)
 
     def load_image(self, name):
+        image_path = os.path.isfile(name)
+        if (not image_path):
+            print("Essa imagem não existe no diretório - Carregue outra imagem!")
+            while(not image_path):
+                name = input("Digite o nome e extensão da imagem (ex: nome_imagem.png): ")
+                image_path = os.path.isfile(name)
+            self.image_name = name
+        
         self.image = iio.imread(name)
         self.image = self.image.astype(np.uint8)
 
