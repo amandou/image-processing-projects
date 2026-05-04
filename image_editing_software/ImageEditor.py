@@ -44,6 +44,13 @@ class ImageEditor:
         else:
             print("Nenhuma imagem para salvar!")
 
+    def reset_image(self):
+        if self.original_image is not None:
+            self.image = self.original_image.copy()
+            print("Imagem resetada para original!")
+        else:
+            print("Nenhuma imagem carregada.")
+
     def main_menu(self):
         while (True):
 
@@ -87,7 +94,7 @@ class ImageEditor:
             print("2 - Log")
             print("3 - Gamma")
             print("4 - Modulação de Contraste")
-            print("5 - Threshold")
+            print("5 - Limiar")
             print("6 - Mostrar imagem")
             print("0 - Voltar ao Menu anterior")
             print("9 - Sair de tudo")
@@ -97,12 +104,16 @@ class ImageEditor:
             if op == "1":
                 self.image = intensity_transformations.inverse(self.image)
                 self.save("edited_image_inv.png")
+                self.reset_image()
             elif op == "2":
                 self.image = intensity_transformations.log_transformation(self.image)
                 self.save("edited_image_log.png")
+                self.reset_image()
             elif op == "3":
                 g = float(input("Gamma: "))
                 self.image = intensity_transformations.gamma_transformation(self.image, g)
+                self.save("edited_image_gamma.png")
+                self.reset_image()
             elif op == "4":
                 a = int(input("a: "))
                 b = int(input("b: "))
@@ -110,10 +121,12 @@ class ImageEditor:
                 d = int(input("d: "))
                 self.image = intensity_transformations.mod_transformation(self.image, a, b, c, d)
                 self.save("edited_image_mod.png")
+                self.reset_image()
             elif op == "5":
-                t = int(input("Threshold: "))
+                t = int(input("Limiar: "))
                 self.image = intensity_transformations.limiar_transformation(self.image, t)
                 self.save("edited_image_lim.png")
+                self.reset_image()
             elif op == "6":
                 if self.image is not None:
                     self.show()
