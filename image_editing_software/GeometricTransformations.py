@@ -37,6 +37,23 @@ class GeometricTransformationsOperations:
                 j_p = int(np.round(p[1]))
 
                 if(i_p < h and i_p >= 0 and j_p < w and j_p >= 0):
-                    nimg[i,j] = img[i_p, j_p]
+                    new_img[i,j] = img[i_p, j_p]
 
-        return nimg
+        return new_img   
+    
+    def translate(self, img, dx, dy):
+        """Translação da imagem."""
+        M = self.inv_translation_matrix(dx, dy)
+        return self.transformation2(img, M)
+
+    def rotate(self, img, angle_deg):
+        """Rotação em torno do centro."""
+        h, w = img.shape[:2]
+        center = (h // 2, w // 2)
+        M = self.inv_rot_matrix(angle_deg, center)
+        return self.transformation2(img, M)
+
+    def scale(self, img, sx, sy):
+        """Escala da imagem."""
+        M = self.inv_scale_matrix(sx, sy)
+        return self.transformation2(img, M)
