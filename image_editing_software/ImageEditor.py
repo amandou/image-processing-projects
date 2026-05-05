@@ -4,6 +4,7 @@ import numpy as np
 import os
 import sys
 import re
+
 import IntensityTransformations
 import GeometricTransformations
 
@@ -61,7 +62,6 @@ class ImageEditor:
 
     def main_menu(self):
         while (True):
-
             if (image_editor.image is None):                
                 image_name = input("Digite o nome e extensão da imagem (ex: nome_imagem.png): ")
                 self.load_image(image_name)
@@ -104,7 +104,7 @@ class ImageEditor:
             print("2 - Log")
             print("3 - Gamma")
             print("4 - Modulação de Contraste")
-            print("5 - Limiar")
+            print("5 - Transformação Criativa")
             print("6 - Mostrar imagem")
             print("0 - Voltar ao menu principal")
             print("9 - Sair de tudo")
@@ -148,7 +148,45 @@ class ImageEditor:
                 sys.exit()
 
     def menu_geometric_transformations(self):
-        pass
+        geometric_transformations = GeometricTransformations.GeometricTransformationsOperations()
+        name = re.search(r"^[^.]*", self.image_name).group()
+        while True:
+            print("\n===== MENU Transformações Geométricas =====")
+            print("1 - Translação")
+            print("2 - Rotação")
+            print("3 - Escala")
+            print("4 - Mostrar Imagem")
+            print("5 - Resetar imagem")
+            print("0 - Voltar ao menu principal")
+            print("9 - Sair de tudo")
+
+            op = input("Escolha: ")
+
+            if op == "1":
+                dx = int(input("dx : "))
+                dy = int(input("dy: "))
+                self.image = geometric_transformations.translate(self.image, dx, dy)
+                self.save(name+f"_translacao_image_{dx}_{dy}.png")
+            elif op == "2":
+                theta = float(input("Ângulo: "))
+                self.image = geometric_transformations.rotate(self.image, theta)
+                self.save(name+f"_rotacao_image_{theta}.png")
+            elif op == "3":
+                si = float(input("si: "))
+                sj = float(input("sj: "))
+                self.image = geometric_transformations.scale(self.image, si, sj)
+                self.save(name+f"_escala_image_{si}_{sj}.png")
+            elif op == "4":
+                if self.image is not None:
+                    self.show()
+                else:
+                    print("Carregue uma imagem primeiro!")
+            elif op == "5":
+                self.reset_image()
+            elif op == "0":
+                print("\nVoltando ao menu anterior ...")
+                break
+            elif op == "9":
         
 if __name__ == "__main__":
     image_editor = ImageEditor("nara.jpg")
