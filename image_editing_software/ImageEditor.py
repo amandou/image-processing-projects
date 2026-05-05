@@ -187,6 +187,8 @@ class ImageEditor:
                 print("\nVoltando ao menu anterior ...")
                 break
             elif op == "9":
+                print("\nSaindo ...")
+                sys.exit()
         
 if __name__ == "__main__":
     image_editor = ImageEditor("nara.jpg")
