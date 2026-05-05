@@ -3,19 +3,35 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 class GeometricTransformationsOperations:
-    def inv_rot_matrix(theta):
+    """
+    Classe que implementa operações de transformações geométricas em imagens.
+    
+    As transformações são realizadas por meio de mapeamento inverso: para cada pixel
+    da imagem de saída, calcula-se sua coordenada correspondente na imagem original
+    usando uma matriz de transformação inversa. 
+    
+    Interpolação utilizada: vizinho mais próximo.
+    """
+
+    def inv_rot_matrix(self, theta, center):
+        """Retorna a matriz inversa para rotação."""
+
         return np.array([
             [np.cos(theta), -np.sin(theta), 0],
             [np.sin(theta), np.cos(theta), 0],
             [0, 0, 1]])
     
-    def inv_scale_matrix(si, sj):
+    def inv_scale_matrix(self, si, sj):
+        """Retorna a matriz inversa para escala."""
+
         return np.array([
             [1.0 / si, 0, 0],
             [0, 1.0 / sj, 0],
             [0, 0, 1]])
     
-    def inv_translation_matrix(ti, tj):
+    def inv_translation_matrix(self, ti, tj):
+        """Retorna a matriz inversa para translação."""
+
         return np.array([
             [1, 0, -ti],
             [0, 1, -tj],
@@ -23,7 +39,15 @@ class GeometricTransformationsOperations:
     
 
     def transformation(self, img, operation):
-        nimg = np.zeros_like(img)
+        """
+        Aplica uma transformação geométrica a uma imagem usando mapeamento inverso.
+        
+        Para cada pixel da imagem de saída, calcula a coordenada correspondente na imagem
+        original através da matriz `operation`. O valor do pixel é copiado da posição 
+        original arredondada (vizinho mais próximo).
+        """
+
+        new_img = np.zeros_like(img)
         h, w, _ = img.shape
         
         M = operation
