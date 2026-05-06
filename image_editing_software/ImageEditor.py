@@ -30,6 +30,7 @@ class ImageEditor:
 
         self.original_image = iio.imread(name)
         self.original_image = self.original_image.astype(np.uint8)
+        self.image_name = name
 
     def show(self):
         print("=== Mostrando imagem ===")
