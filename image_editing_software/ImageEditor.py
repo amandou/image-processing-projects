@@ -192,5 +192,5 @@ class ImageEditor:
                 sys.exit()
         
 if __name__ == "__main__":
-    image_editor = ImageEditor("nara.jpg")
+    image_editor = ImageEditor("nara.png")
     image_editor.main_menu()
