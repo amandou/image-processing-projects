@@ -16,10 +16,25 @@ class GeometricTransformationsOperations:
     def inv_rot_matrix(self, theta, center):
         """Retorna a matriz inversa para rotação."""
 
-        return np.array([
+        cx, cy = center
+        theta = np.radians(theta)
+
+        # Matriz de translação para a origem            
+        T1 = np.array([[1, 0, -cx], [0, 1, -cy], [0, 0, 1]], dtype=np.float32)
+
+        # Matriz de rotação inversa
+        R = np.array([
             [np.cos(theta), -np.sin(theta), 0],
             [np.sin(theta), np.cos(theta), 0],
             [0, 0, 1]])
+        
+        # Matriz de translação de volta ao centro
+        T2 = np.array([[1, 0, cx], [0, 1, cy], [0, 0, 1]], dtype=np.float32)
+        
+        # Matriz final
+        M = T2 @ R @ T1
+        
+        return M
     
     def inv_scale_matrix(self, si, sj):
         """Retorna a matriz inversa para escala."""
@@ -79,5 +94,5 @@ class GeometricTransformationsOperations:
 
     def scale(self, img, sx, sy):
         """Escala da imagem."""
-        M = self.inv_scale_matrix(sx, sy)
+        M = self.inv_scale_matrix(sx, sy, img.shape)
         return self.transformation(img, M)
