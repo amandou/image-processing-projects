@@ -100,9 +100,36 @@ class GeometricTransformationsOperations:
         return new_img   
     
     def translate(self, img, dx, dy):
-        """Translação da imagem."""
-        M = self.inv_translation_matrix(dx, dy)
-        return self.transformation(img, M)
+        """
+        Translação com expansão de canvas.
+        dx: deslocamento horizontal (+ = direita, - = esquerda)
+        dy: deslocamento vertical (+ = baixo, - = cima)
+        Retorna imagem transladada sem bordas pretas.
+        """
+        h, w = img.shape[:2]
+
+        new_h = h + abs(dy)
+        new_w = w + abs(dx)
+
+        if img.ndim == 3:
+            new_img = np.zeros((new_h, new_w, img.shape[2]), dtype=img.dtype)
+        else:
+            new_img = np.zeros((new_h, new_w), dtype=img.dtype)
+
+        # offsets corretos
+        off_y = max(dy, 0)
+        off_x = max(dx, 0)
+
+        # posição onde a imagem será colocada
+        start_y = off_y
+        end_y = off_y + h
+
+        start_x = off_x
+        end_x = off_x + w
+
+        new_img[start_y:end_y, start_x:end_x] = img
+
+        return new_img
 
     def rotate(self, img, angle_deg):
         """Rotação em torno do centro."""
