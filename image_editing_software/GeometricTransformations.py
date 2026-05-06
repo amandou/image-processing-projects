@@ -36,13 +36,32 @@ class GeometricTransformationsOperations:
         
         return M
     
-    def inv_scale_matrix(self, si, sj):
+    def inv_scale_matrix(self, si, sj, img_shape):
         """Retorna a matriz inversa para escala."""
 
-        return np.array([
+        h, w = img_shape[:2]
+
+        S = np.array([
             [1.0 / si, 0, 0],
             [0, 1.0 / sj, 0],
-            [0, 0, 1]])
+            [0, 0, 1]
+        ], dtype=np.float32)
+
+        tx = 0
+        ty = 0
+
+        if si < 0:
+            tx = w
+        if sj < 0:
+            ty = h
+
+        T = np.array([
+            [1, 0, tx],
+            [0, 1, ty],
+            [0, 0, 1]
+        ], dtype=np.float32)
+
+        return T @ S
     
     def inv_translation_matrix(self, ti, tj):
         """Retorna a matriz inversa para translação."""
