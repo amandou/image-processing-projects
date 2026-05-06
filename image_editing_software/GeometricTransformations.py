@@ -68,16 +68,16 @@ class GeometricTransformationsOperations:
     def translate(self, img, dx, dy):
         """Translação da imagem."""
         M = self.inv_translation_matrix(dx, dy)
-        return self.transformation2(img, M)
+        return self.transformation(img, M)
 
     def rotate(self, img, angle_deg):
         """Rotação em torno do centro."""
         h, w = img.shape[:2]
         center = (h // 2, w // 2)
         M = self.inv_rot_matrix(angle_deg, center)
-        return self.transformation2(img, M)
+        return self.transformation(img, M)
 
     def scale(self, img, sx, sy):
         """Escala da imagem."""
         M = self.inv_scale_matrix(sx, sy)
-        return self.transformation2(img, M)
+        return self.transformation(img, M)
