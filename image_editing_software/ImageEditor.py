@@ -9,14 +9,29 @@ import IntensityTransformations
 import GeometricTransformations
 
 class ImageEditor:
+    """
+    Classe principal do editor de imagens.
+    Gerencia o estado da imagem (original e editada), os menus de interação
+    e as operações de carregamento, salvamento, reset e aplicação de transformações.
+    """
+
     def __init__(self, image_name = None):
+        # Nome do arquivo da imagem atual
         self.image_name = image_name
+        # Cópia da imagem original (para reset)
         self.original_image = None
+        # Imagem atual (pode ser transformada)
         self.image = None
         if image_name:
             self.load_image(image_name)
 
     def load_image(self, name):
+        """
+        Carrega uma imagem a partir de um arquivo.
+        Valida se o arquivo existe; caso contrário, solicita um novo nome até que seja válido.
+        Armazena tanto a imagem atual quanto uma cópia original (para reset).
+        """
+
         image_path = os.path.isfile(name)
         if (not image_path):
             print("Essa imagem não existe no diretório - Carregue outra imagem!")
@@ -33,6 +48,8 @@ class ImageEditor:
         self.image_name = name
 
     def show(self):
+        """Exibe a imagem atual em uma janela do matplotlib."""
+
         print("=== Mostrando imagem ===")
         plt.imshow(self.image, cmap='gray')
         plt.title("Imagem")
@@ -40,6 +57,12 @@ class ImageEditor:
         plt.show()
 
     def save(self, file_name):
+        """
+        Salva a imagem atual no diretório 'edited_images'.
+        Cria o diretório se ele não existir.
+        Se o arquivo já existir, sobrescreve (com aviso).
+        """
+
         folder_path = "edited_images"
         save_path = os.path.join(folder_path, file_name)
 
@@ -55,6 +78,10 @@ class ImageEditor:
             print("Nenhuma imagem para salvar!")
 
     def reset_image(self):
+        """
+        Restaura a imagem atual para a versão original.
+        """
+
         if self.original_image is not None:
             self.image = self.original_image.copy()
             print("Imagem resetada para original!")
@@ -62,6 +89,8 @@ class ImageEditor:
             print("Nenhuma imagem carregada.")
 
     def main_menu(self):
+        """Menu principal do editor. Gerencia a navegação entre as opções."""
+
         while (True):
             if (image_editor.image is None):                
                 image_name = input("Digite o nome e extensão da imagem (ex: nome_imagem.png): ")
@@ -96,6 +125,12 @@ class ImageEditor:
                 break
 
     def menu_intensity_transformations(self):
+        """
+        Submenu para transformações de intensidade.
+        As transformações são aplicadas, a imagem resultante é salva,
+        e em seguida a imagem é resetada para a original (para não acumular efeitos).
+        """
+          
         intensity_transformations = IntensityTransformations.IntensityTransformationsOperations()
         name = re.search(r"^[^.]*", self.image_name).group()
 
@@ -149,6 +184,13 @@ class ImageEditor:
                 sys.exit()
 
     def menu_geometric_transformations(self):
+        """
+        Submenu para transformações geométricas.
+        Diferente do menu de intensidade, a imagem NÃO é resetada automaticamente,
+        permitindo a composição de múltiplas transformações (ex.: transladar + rotacionar).
+        O usuário pode resetar manualmente pela opção 5.
+        """
+
         geometric_transformations = GeometricTransformations.GeometricTransformationsOperations()
         name = re.search(r"^[^.]*", self.image_name).group()
         while True:
@@ -192,5 +234,6 @@ class ImageEditor:
                 sys.exit()
         
 if __name__ == "__main__":
+    # Ponto de entrada: cria o editor e carrega a imagem padrão 'nara.png'
     image_editor = ImageEditor("nara.png")
     image_editor.main_menu()
