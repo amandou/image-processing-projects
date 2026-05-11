@@ -72,33 +72,47 @@ class GeometricTransformationsOperations:
             [0, 0, 1]])
     
 
-    def transformation(self, img, operation):
+    def transformation(self, img, M):
         """
-        Aplica uma transformação geométrica a uma imagem usando mapeamento inverso.
-        
-        Para cada pixel da imagem de saída, calcula a coordenada correspondente na imagem
-        original através da matriz `operation`. O valor do pixel é copiado da posição 
-        original arredondada (vizinho mais próximo).
+        Aplica transformação geométrica com mapeamento inverso
+        + crop automático baseado em máscara (robusto para JPEG/PNG)
         """
 
-        new_img = np.zeros_like(img)
-        h, w, _ = img.shape
-        
-        M = operation
-    
+        if img.ndim == 3:
+            h, w, c = img.shape
+            new_img = np.zeros_like(img)
+        else:
+            h, w = img.shape
+            new_img = np.zeros_like(img)
+
+        # máscara de pixels válidos
+        mask = np.zeros((h, w), dtype=bool)
+
         for i in range(h):
             for j in range(w):
-                p_linha = np.array([i, j, 1])
-                p = M @ p_linha
+            
+                p = M @ np.array([j, i, 1], dtype=np.float32)
 
-                i_p = int(np.round(p[0]))
-                j_p = int(np.round(p[1]))
+                j_orig = int(np.round(p[0])) 
+                i_orig = int(np.round(p[1])) 
 
-                if(i_p < h and i_p >= 0 and j_p < w and j_p >= 0):
-                    new_img[i,j] = img[i_p, j_p]
+                if 0 <= i_orig < h and 0 <= j_orig < w:
+                    new_img[i, j] = img[i_orig, j_orig]
+                    mask[i, j] = True
+       
+        if not np.any(mask):
+            print("Erro: transformação gerou imagem vazia.")
+            return img
 
-        return new_img   
-    
+        coords = np.argwhere(mask)
+
+        min_i, min_j = coords.min(axis=0)
+        max_i, max_j = coords.max(axis=0)
+
+        cropped = new_img[min_i:max_i+1, min_j:max_j+1]
+
+        return cropped
+
     def translate(self, img, dx, dy):
         """
         Translação com expansão de canvas.
@@ -134,7 +148,7 @@ class GeometricTransformationsOperations:
     def rotate(self, img, angle_deg):
         """Rotação em torno do centro."""
         h, w = img.shape[:2]
-        center = (h // 2, w // 2)
+        center = (w // 2, h // 2)
         M = self.inv_rot_matrix(angle_deg, center)
         return self.transformation(img, M)
 
