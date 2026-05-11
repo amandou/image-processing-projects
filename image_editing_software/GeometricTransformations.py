@@ -24,8 +24,8 @@ class GeometricTransformationsOperations:
 
         # Matriz de rotação inversa
         R = np.array([
-            [np.cos(theta), -np.sin(theta), 0],
-            [np.sin(theta), np.cos(theta), 0],
+            [np.cos(theta), np.sin(theta), 0],
+            [-np.sin(theta), np.cos(theta), 0],
             [0, 0, 1]])
         
         # Matriz de translação de volta ao centro
