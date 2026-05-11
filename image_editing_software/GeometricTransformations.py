@@ -63,15 +63,6 @@ class GeometricTransformationsOperations:
 
         return T @ S
     
-    def inv_translation_matrix(self, ti, tj):
-        """Retorna a matriz inversa para translação."""
-
-        return np.array([
-            [1, 0, -ti],
-            [0, 1, -tj],
-            [0, 0, 1]])
-    
-
     def transformation(self, img, M):
         """
         Aplica transformação geométrica com mapeamento inverso
